@@ -10,8 +10,8 @@
   <name>Rest Server</name>
 
   <properties>
-    <java.source.level>1.5</java.source.level>
-    <java.target.level>1.5</java.target.level>
+    <java.source.level>1.8</java.source.level>
+    <java.target.level>1.8</java.target.level>
   </properties>
 
   <dependencies>

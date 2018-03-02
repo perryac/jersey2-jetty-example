@@ -3,11 +3,16 @@ package edomingues.restserver;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import edomingues.restserver.rest.HelloWorldResource;
+import edomingues.restserver.CustomLoggingFilter;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Main {
@@ -29,13 +34,18 @@ public class Main {
 		ResourceConfig resourceConfig = new ResourceConfig();		
 		resourceConfig.packages(HelloWorldResource.class.getPackage().getName());
 		resourceConfig.register(JacksonFeature.class);
+		resourceConfig.register(CustomLoggingFilter.class);
+        //resourceConfig.register(LoggingFilter.class);
 		ServletContainer servletContainer = new ServletContainer(resourceConfig);
 		ServletHolder sh = new ServletHolder(servletContainer);                
 		Server server = new Server(serverPort);		
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         context.addServlet(sh, "/*");
+        context.setInitParameter("com.sun.jersey.config.feature.Trace", "true");
 		server.setHandler(context);
+		//Logger.getLogger("com.sun.jersey").setLevel(Level.ALL);
+
 		return server;
 	}
 	
